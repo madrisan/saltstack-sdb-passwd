@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3fc99967c7d34805ba71de2e5b3c8f19)](https://www.codacy.com/app/madrisan/saltstack-sdb-passwd?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=madrisan/saltstack-sdb-passwd&amp;utm_campaign=Badge_Grade)
 [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://spdx.org/licenses/Apache-2.0.html)
 
 ![](images/saltstack_horizontal_dark.png?raw=true)
