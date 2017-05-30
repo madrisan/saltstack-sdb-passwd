@@ -55,10 +55,16 @@ Getting a value requires only the SDB URI to be specified. To retrieve a value f
 $ sudo salt-run sdb.get sdb://pwd/user1
 ```
 
-Setting a value uses the same URI as would be used to retrieve it, followed by the value as another argument. For the above pwd URI, you would set a new value using a command like:
+Setting a value uses the same URI as would be used to retrieve it, followed by the value as another argument. For the above `pwd` URI, you would set a new value using a command like:
 
 ```bash
 $ sudo salt-run sdb.set sdb://pwd/user2 '$5$n4XiZajqf...P3BrvFM5hYq.UazR4dHxl8'
+```
+
+Deleting values is done pretty much the same way as getting them:
+
+```bash
+$ sudo salt-run sdb.delete sdb://pwd/user1
 ```
 
 ## Using SDB URIs in Files
