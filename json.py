@@ -52,6 +52,16 @@ def _read_json(profile):
             raise CommandExecutionError(
                 'There was an error with the JSON data: {0}'.format(exc))
 
+def _write_json(profile, json_data):
+    '''
+    Write the JSON data to file
+    '''
+    try:
+        with salt.utils.fopen(profile['data'], 'w') as fp_:
+            json.dump(json_data, fp_, indent=2, sort_keys=True)
+    except IOError as exc:
+        raise CommandExecutionError(exc)
+
 def delete(key, profile=None):
     '''
     Remove a key from a JSON file
@@ -61,12 +71,8 @@ def delete(key, profile=None):
         del json_data[key]
     except KeyError:
         return False
-    try:
-        with salt.utils.fopen(profile['data'], 'w') as fp_:
-            json.dump(json_data, fp_, indent=2, sort_keys=True)
-    except IOError as exc:
-        raise CommandExecutionError(exc)
 
+    _write_json(profile, json_data)
     return key
  
 def get(key, profile=None):
@@ -83,11 +89,6 @@ def set_(key, value, profile=None):
     '''
     json_data = _read_json(profile)
     json_data[key] = value
- 
-    try:
-        with salt.utils.fopen(profile['data'], 'w') as fp_:
-            json.dump(json_data, fp_, indent=2, sort_keys=True)
-    except IOError as exc:
-        raise CommandExecutionError(exc)
- 
+
+    _write_json(profile, json_data)
     return get(key, profile)
