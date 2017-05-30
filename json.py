@@ -51,12 +51,30 @@ def _read_json(profile):
         except ValueError as exc:
             raise CommandExecutionError(
                 'There was an error with the JSON data: {0}'.format(exc))
+
+def delete(key, profile=None):
+    '''
+    Remove a key from a JSON file
+    '''
+    json_data = _read_json(profile)
+    try:
+        del json_data[key]
+    except KeyError:
+        return False
+    try:
+        with salt.utils.fopen(profile['data'], 'w') as fp_:
+            json.dump(json_data, fp_, indent=2, sort_keys=True)
+    except IOError as exc:
+        raise CommandExecutionError(exc)
+
+    return key
  
 def get(key, profile=None):
     '''
     Get a value from a JSON file
     '''
     json_data = _read_json(profile)
+
     return json_data.get(key, {})
  
 def set_(key, value, profile=None):
