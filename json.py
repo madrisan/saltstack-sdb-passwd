@@ -80,8 +80,8 @@ def get(key, profile=None):
     Get a value from a JSON file
     '''
     json_data = _read_json(profile)
-
-    return json_data.get(key, {})
+    value = json_data.get(key, {})
+    return '\n'.join(value)
  
 def set_(key, value, profile=None):
     '''
