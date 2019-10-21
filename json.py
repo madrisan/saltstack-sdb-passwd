@@ -28,29 +28,35 @@ CLI Example:
         sudo salt-run sdb.get sdb://pwd/user1
 '''
 from __future__ import absolute_import
-from salt.exceptions import CommandExecutionError
+import salt.exceptions
 import salt.utils.files
 import json
  
 __func_alias__ = {
     'set_': 'set'
 }
- 
+
 def _read_json(profile):
     '''
     Return the content of a JSON file
     '''
+    jsonfile = profile.get('data', None)
+    if not jsonfile:
+        raise salt.exceptions.CommandExecutionError(
+            'No key data in the SDB profile')
+
     try:
-        with salt.utils.files.fopen(profile['data'], 'r') as fp_:
+        with salt.utils.files.fopen(jsonfile, 'r') as fp_:
             return json.load(fp_)
-        except IOError as exc:
-            raise CommandExecutionError(exc)
-        except KeyError as exc:
-            raise CommandExecutionError(
-                '{0} needs to be configured'.format(exc))
-        except ValueError as exc:
-            raise CommandExecutionError(
-                'There was an error with the JSON data: {0}'.format(exc))
+    except (IOError, OSError) as exc:
+        raise salt.exceptions.CommandExecutionError(exc)
+    except KeyError as exc:
+        raise salt.exceptions.CommandExecutionError(
+            '{0} needs to be configured'.format(exc))
+    except ValueError as exc:   # includes json.decoder.JSONDecodeError
+        raise salt.exceptions.CommandExecutionError((
+            'Decoding JSON ({0}) has failed: {1}'
+            .format(jsonfile, exc))) from None
 
 def _write_json(profile, json_data):
     '''
