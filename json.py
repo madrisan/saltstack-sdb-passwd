@@ -6,11 +6,11 @@ to be configured in either the minion or, as in our implementation,
 in the master configuration file (/etc/salt/master.d/passwords.conf).
 This profile requires very little:
  
-    .. code-block:: yaml
+.. code-block:: yaml
  
-      pwd:
-        driver: json
-        data: /srv/salt/common/pwd.json
+     pwd:
+       driver: json
+       data: /srv/salt/common/pwd.json
  
 The ``driver`` refers to the json module and ``data`` is the path
 to the JSON file that contains the data.
@@ -18,14 +18,16 @@ to the JSON file that contains the data.
 This file should be saved as salt/_sdb/json.py
  
 .. code-block:: yaml
- 
-    user: sdb://pwd/user1
+
+     user: sdb://pwd/user1
  
 CLI Example:
  
-    .. code-block:: bash
+.. code-block:: bash
  
-        sudo salt-run sdb.get sdb://pwd/user1
+     salt-run sdb.delete sdb://pwd/user1
+     salt-run sdb.get sdb://pwd/user1
+     salt-run sdb.set sdb://pwd/user1 '$5$0DZt7BTf$gjNPsFCJDpwUhLervVkOhbzrmSxNnfJw46V.h7eEaE.'
 '''
 from __future__ import absolute_import
 import salt.exceptions
