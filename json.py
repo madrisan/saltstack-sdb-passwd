@@ -29,7 +29,7 @@ CLI Example:
 '''
 from __future__ import absolute_import
 from salt.exceptions import CommandExecutionError
-import salt.utils
+import salt.utils.files
 import json
  
 __func_alias__ = {
@@ -41,7 +41,7 @@ def _read_json(profile):
     Return the content of a JSON file
     '''
     try:
-        with salt.utils.fopen(profile['data'], 'r') as fp_:
+        with salt.utils.files.fopen(profile['data'], 'r') as fp_:
             return json.load(fp_)
         except IOError as exc:
             raise CommandExecutionError(exc)
@@ -57,7 +57,7 @@ def _write_json(profile, json_data):
     Write the JSON data to file
     '''
     try:
-        with salt.utils.fopen(profile['data'], 'w') as fp_:
+        with salt.utils.files.fopen(profile['data'], 'w') as fp_:
             json.dump(json_data, fp_, indent=2, sort_keys=True)
     except IOError as exc:
         raise CommandExecutionError(exc)
